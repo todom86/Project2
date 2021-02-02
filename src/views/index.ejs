@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Religion Study</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head> 
+
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-12">
+            <h1>Project 2</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12  col-md-9">
+            <select id="select"></select>
+            <div id="chart"></div>
+          </div>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+var svgWidth = 800;
+var svgHeight = 600;
+
+var margin = {
+    top: 20,
+    right: 20,
+    bottom: 160,
+    left: 160
+};
+
+var width = svgWidth - margin.left - margin.right;
+var height = svgHeight - margin.top - margin.bottom;
+
+var svg = d3
+    .select("#chart")
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+var chartGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    
+var url = 'http://localhost:5000/data'
+d3.json(url).then((data) => {
+    
+    console.log(data);
+
+    var stateList = Array.from(new Set(data.map(row => row.state).sort()));
+    var sexList = Array.from(new Set(data.map(row => row.sex).sort()));
+    var ageList = Array.from(new Set(data.map(row => row.age_group).sort()));
+    var generationList = Array.from(new Set(data.map(row => row.generation).sort()));
+    var incomeList = Array.from(new Set(data.map(row => row.income).sort()));
+    var partyList = Array.from(new Set(data.map(row => row.party).sort()));
+    var religionList = Array.from(new Set(data.map(row => row.religion).sort()));
+    var ideoList = Array.from(new Set(data.map(row => row.ideo).sort()));
+
+    // console.log(stateList);
+    // console.log(sexList);
+    // console.log(ageList);
+    // console.log(generationList);
+    // console.log(incomeList);
+    // console.log(partyList);
+    console.log(religionList);
+    // console.log(ideoList);
+
+    function getBars() {
+        var x=0
+        var bars = []
+        religionList.forEach((item) => {
+            data.forEach((d) => {
+                if (d.religion = item) {
+                    x += (d.weight)
+                };
+            });
+            bars.push({
+                "weight": x,
+                "religion": item
+            });
+        });
+        return bars
+    }
+
+
+    bars = getBars();
+
+    console.log(bars.map(d => d.weight))
+
+    // chosenXaxis = religionList;
+
+    var dropdownMenu = d3.select("#select");
+
+    stateList.map((d) => {
+        dropdownMenu
+            .append("option")
+            .text(d)
+            .property("value", d);
+    });
+
+    var xBandScale = d3.scaleBand()
+        .domain(bars.map(d => d.religion))
+        .range([0, width])
+        .padding(0.2);
+
+    var yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(bars.map(d => d.weight))])
+        .range([height, 0]);
+    
+    var bottomAxis = d3.axisBottom(xBandScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
+
+    chartGroup.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis)
+        .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end");
+
+    chartGroup.append("g")
+        .call(leftAxis);
+
+    var barGroup = chartGroup.append("g");
+    
+    barGroup.selectAll("rect")
+        .data(bars)
+        .enter()
+        .append("rect")
+            .attr("x", d => xBandScale(d.religion))
+            .attr("y", d => yLinearScale(d.weight))
+            .attr("width", xBandScale.bandwidth())
+            .attr("height",  d => height - yLinearScale(d.weight));
+            
+            
+
+});
+</script>
