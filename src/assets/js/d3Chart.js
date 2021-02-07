@@ -1,11 +1,11 @@
-var svgWidth = 800;
-var svgHeight = 600;
+var svgWidth = 600;
+var svgHeight = 500;
 
 var margin = {
-    top: 20,
-    right: 20,
-    bottom: 160,
-    left: 160
+    top: 60,
+    right: 10,
+    bottom: 180,
+    left: 20
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -66,29 +66,41 @@ function yScale(stateInfo) {
     return yLinearScale
 }
 
-function renderXAxis(newXScale, xAxis) {
+function renderXAxis(newXScale, xAxis, chartGroup) {
+
+    chartGroup.select(".x.axis").remove();
+
     var bottomAxis = d3.axisBottom(newXScale);
 
-    xAxis
-      .transition()
-      .duration(1000)
-      .call(bottomAxis);
+    xAxis = chartGroup.append("g")
+        .attr("class", "x axis")
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis)
+        .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end")
+            .transition()
+            .duration(1000);
 
     return xAxis
 }
 
-function renderYAxis(newYScale, yAxis) {
-    var leftAxis = d3.axisLeft(newYScale);
+// function renderYAxis(newYScale, yAxis, chartGroup) {
 
-    yAxis
-      .transition()
-      .duration(1000)
-      .call(leftAxis);
-    
-    return yAxis
-}
+//     chartGroup.select(".y.axis").remove();
 
-function renderRect(rectangles, newXScale, newYScale, stateInfo, barGroup) {
+//     var leftAxis = d3.axisLeft(newYScale);
+
+//     yAxis = chartGroup.append("g")
+//         .attr("class", "y axis")
+//         .call(leftAxis)
+//         .transition()
+//         .duration(1000);
+
+//     return yAxis
+// }
+
+function renderRect(rectangles, xAxis, newXScale, newYScale, stateInfo, barGroup) {
       
     rectangles.transition()
         .delay((d,i) => i*50)
@@ -96,6 +108,8 @@ function renderRect(rectangles, newXScale, newYScale, stateInfo, barGroup) {
         .attr("y", height)
         .attr("height", 0)
         .remove();
+    
+    // console.log(xAxis);
 
     var rectangles = barGroup.selectAll("rect")
         .data(stateInfo, d => JSON.stringify(d))
@@ -103,7 +117,7 @@ function renderRect(rectangles, newXScale, newYScale, stateInfo, barGroup) {
         .append("rect")
           .attr("x", d => newXScale(d.category))
           .attr("y", height)
-          .attr("width", newXScale.bandwidth())
+          .attr("width", 0)
           .attr("height", 0)
           .attr("class", "bars");
     
@@ -111,6 +125,7 @@ function renderRect(rectangles, newXScale, newYScale, stateInfo, barGroup) {
         .delay((d,i) => 1000 + i*50)
         .duration(1000)
         .attr("y", d => newYScale(d.percent))
+        .attr("width", newXScale.bandwidth())
         .attr("height", d => height - newYScale(d.percent));
 
     // console.log(rectangles);
@@ -239,14 +254,18 @@ d3.json(url).then((data) => {
     var leftAxis = d3.axisLeft(yLinearScale);
 
     var xAxis = chartGroup.append("g")
+        .attr("class", "x axis")
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis)
         .selectAll("text")
             .attr("transform", "translate(-10,0)rotate(-45)")
             .style("text-anchor", "end");
 
-    var yAxis = chartGroup.append("g")
-        .call(leftAxis);
+    // console.log(xAxis);
+
+    // var yAxis = chartGroup.append("g")
+    //     .attr("class", "y axis")
+    //     .call(leftAxis);
 
     var barGroup = chartGroup.append("g");
     
@@ -256,7 +275,7 @@ d3.json(url).then((data) => {
         .append("rect")
             .attr("x", d => xBandScale(d.category))
             .attr("y", height)
-            .attr("width", xBandScale.bandwidth())
+            .attr("width", 0)
             .attr("height", 0)
             .attr("class", "bars");
     
@@ -264,6 +283,7 @@ d3.json(url).then((data) => {
         .delay((d,i) => i*50)
         .duration(1000)
         .attr("y", d => yLinearScale(d.percent))
+        .attr("width", xBandScale.bandwidth())
         .attr("height", d => height - yLinearScale(d.percent));
 
     var rectText = barGroup.selectAll("text")
@@ -293,11 +313,11 @@ d3.json(url).then((data) => {
 
         xBandScale = xScale(stateInfo, chosenXAxis);
 
-        // xAxis = renderXAxis(xBandScale, xAxis);
+        xAxis = renderXAxis(xBandScale, xAxis, chartGroup);
 
-        yAxis = renderYAxis(yLinearScale, yAxis);
+        // yAxis = renderYAxis(yLinearScale, yAxis, chartGroup);
 
-        rectangles = renderRect(rectangles, xBandScale, yLinearScale, stateInfo, barGroup);
+        rectangles = renderRect(rectangles, xAxis, xBandScale, yLinearScale, stateInfo, barGroup);
 
         rectText = renderRectText(rectText, xBandScale, yLinearScale, stateInfo, barGroup);
 
@@ -340,11 +360,11 @@ d3.json(url).then((data) => {
 
         xBandScale = xScale(stateInfo, chosenXAxis);
 
-        xAxis = renderXAxis(xBandScale, xAxis);
+        xAxis = renderXAxis(xBandScale, xAxis, chartGroup);
 
-        yAxis = renderYAxis(yLinearScale, yAxis);
+        // yAxis = renderYAxis(yLinearScale, yAxis, chartGroup);
 
-        rectangles = renderRect(rectangles, xBandScale, yLinearScale, stateInfo, barGroup);
+        rectangles = renderRect(rectangles, xAxis, xBandScale, yLinearScale, stateInfo, barGroup);
 
         rectText = renderRectText(rectText, xBandScale, yLinearScale, stateInfo, barGroup);
 
