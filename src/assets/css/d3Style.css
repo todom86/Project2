@@ -1,0 +1,42 @@
+  .percentText {
+    font-family: sans-serif;
+    font-size: 10px;
+    padding: 2px;
+    fill: black;
+    text-anchor: start;
+  }
+
+  .bars {
+    fill: teal;
+    stroke: #e3e3e3;
+  }
+
+  .d3-tip {
+    padding: 6px;
+    font-size: 12px;
+    line-height: 1;
+    line-height: 1.5em;
+    color: #fff;
+    text-align: center;
+    text-transform: capitalize;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+  }
+
+  /* Mobile Rules
+@media screen and (max-width: 530px) {
+    .stateText {
+      display: none;
+    }
+  
+    .aText {
+      font-size: 14px;
+    }
+  }
+  
+  @media screen and (max-width: 400px) {
+    .aText {
+      font-size: 13px;
+    }
+  } */
+
