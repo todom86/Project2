@@ -72,9 +72,8 @@ function renderXAxis(newXScale, xAxis) {
     xAxis
       .transition()
       .duration(1000)
-    //   .attr("transform", `translate(0, ${height})`)
       .call(bottomAxis);
-  
+
     return xAxis
 }
 
@@ -89,31 +88,73 @@ function renderYAxis(newYScale, yAxis) {
     return yAxis
 }
 
-function renderRect(rectangles, newXScale, newYScale, stateInfo) {
-  
-    rectangles
-      .data(stateInfo)
-      .transition()
-      .duration(500)
-      .delay((d,i) => i*100)
-      .attr("y", d => newYScale(d.percent))
-      .attr("height",  d => height - newYScale(d.percent));
+function renderRect(rectangles, newXScale, newYScale, stateInfo, barGroup) {
       
+    rectangles.transition()
+        .delay((d,i) => i*50)
+        .duration(1000)
+        .attr("y", height)
+        .attr("height", 0)
+        .remove();
 
+    var rectangles = barGroup.selectAll("rect")
+        .data(stateInfo, d => JSON.stringify(d))
+        .enter()
+        .append("rect")
+          .attr("x", d => newXScale(d.category))
+          .attr("y", height)
+          .attr("width", newXScale.bandwidth())
+          .attr("height", 0)
+          .attr("class", "bars");
+    
+    rectangles.transition()
+        .delay((d,i) => 1000 + i*50)
+        .duration(1000)
+        .attr("y", d => newYScale(d.percent))
+        .attr("height", d => height - newYScale(d.percent));
+
+    // console.log(rectangles);
+    
     return rectangles
 }
 
-function renderRectText(rectText, newXScale, newYScale, stateInfo) {
+function renderRectText(rectText, newXScale, newYScale, stateInfo, barGroup) {
 
-    rectText
-      .data(stateInfo)
-      .transition()
-      .duration(500)
-      .delay((d,i) => i*100)
-      .attr("y", d => newYScale(d.percent)-2)
-      .text(d => format(d.percent) + "%");
+    // rectText
+    //   .data(stateInfo)
+    //   .transition()
+    //   .duration(500)
+    //   .delay((d,i) => i*100)
+    //   .attr("y", d => newYScale(d.percent)-2)
+    //   .text(d => format(d.percent) + "%");
 
-    return rectText      
+    // return rectText   
+    var format = d3.format(".2f"); 
+    
+    rectText.transition()
+        .delay((d,i) => i*50)
+        .duration(1000)
+        .attr("y", height)
+        .attr("height", 0)
+        .remove();
+
+    var rectText = barGroup.selectAll("text")
+        .data(stateInfo, d => JSON.stringify(d))
+        .enter()
+        .append("text")
+            .attr("x", d => newXScale(d.category))
+            .attr("y", height)
+            .text(d => format(d.percent) + "%")
+            .attr("class", "percentText");
+    
+    rectText.transition()
+        .delay((d,i) => 1000 + i*50)
+        .duration(1000)
+        .attr("y", d => newYScale(d.percent)-5);
+
+    // console.log(rectText);
+    
+    return rectText
 }
 
 function updateSpider(stateInfo) {
@@ -214,19 +255,30 @@ d3.json(url).then((data) => {
         .enter()
         .append("rect")
             .attr("x", d => xBandScale(d.category))
-            .attr("y", d => yLinearScale(d.percent))
+            .attr("y", height)
             .attr("width", xBandScale.bandwidth())
-            .attr("height",  d => height - yLinearScale(d.percent))
+            .attr("height", 0)
             .attr("class", "bars");
+    
+    rectangles.transition()
+        .delay((d,i) => i*50)
+        .duration(1000)
+        .attr("y", d => yLinearScale(d.percent))
+        .attr("height", d => height - yLinearScale(d.percent));
 
     var rectText = barGroup.selectAll("text")
         .data(stateInfo)
         .enter()
         .append("text")
             .attr("x", d => xBandScale(d.category))
-            .attr("y", d => yLinearScale(d.percent)-5)
+            .attr("y", height)
             .text(d => format(d.percent) + "%")
             .attr("class", "percentText");
+
+    rectText.transition()
+        .delay((d,i) => i*50)
+        .duration(1000)
+        .attr("y", d => yLinearScale(d.percent)-5);
 
     updateSpider(stateInfo);
             
@@ -245,9 +297,9 @@ d3.json(url).then((data) => {
 
         yAxis = renderYAxis(yLinearScale, yAxis);
 
-        rectangles = renderRect(rectangles, xBandScale, yLinearScale, stateInfo);
+        rectangles = renderRect(rectangles, xBandScale, yLinearScale, stateInfo, barGroup);
 
-        rectText = renderRectText(rectText, xBandScale, yLinearScale, stateInfo);
+        rectText = renderRectText(rectText, xBandScale, yLinearScale, stateInfo, barGroup);
 
         updateSpider(stateInfo);
     });
@@ -292,11 +344,11 @@ d3.json(url).then((data) => {
 
         yAxis = renderYAxis(yLinearScale, yAxis);
 
-        rectangles = renderRect(rectangles, xBandScale, yLinearScale, stateInfo);
+        rectangles = renderRect(rectangles, xBandScale, yLinearScale, stateInfo, barGroup);
 
-        rectText = renderRectText(rectText, xBandScale, yLinearScale, stateInfo);
+        rectText = renderRectText(rectText, xBandScale, yLinearScale, stateInfo, barGroup);
 
         updateSpider(stateInfo);
-    })
+    });
 
 });
