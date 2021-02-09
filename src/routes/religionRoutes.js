@@ -7,11 +7,14 @@ var MongoClient = require('mongodb').MongoClient;
 
 // console.log(configMongo.url);
 
+var results = null;
+
 var getData = function() {
     dataRouter.all('*', cors());
 
     dataRouter.route('/')
         .get((req, res) => {
+            // if (!results) {
             MongoClient.connect(configMongo.url, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
@@ -36,7 +39,10 @@ var getData = function() {
                 });
             };
         });
-    });
+    // } else {
+    //     res.send(results);
+    // }
+        });
     return dataRouter;
 };
 

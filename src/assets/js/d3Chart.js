@@ -154,13 +154,14 @@ function renderRectText(rectText, newXScale, newYScale, stateInfo, barGroup) {
         .append("text")
             .attr("x", d => newXScale(d.category))
             .attr("y", height)
-            .text(d => format(d.percent) + "%")
+            .text("")
             .attr("class", "percentText");
     
     rectText.transition()
         .delay((d,i) => 1000 + i*50)
         .duration(1000)
-        .attr("y", d => newYScale(d.percent)-5);
+        .attr("y", d => newYScale(d.percent)-5)
+        .text(d => format(d.percent) + "%");
 
     // console.log(rectText);
     
