@@ -1,6 +1,6 @@
 // var cors = require('cors');
 var express = require('express');
-var app = express();
+// var app = express();
 var dataRouter = express.Router();
 var configMongo = require('../config/configmongo.js');
 var MongoClient = require('mongodb').MongoClient;

@@ -3,7 +3,7 @@ var app = express();
 
 var dataRouter = require('./src/routes/getStateData');
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 8000;
 
 app.use(express.static('public'));
 app.use(express.static('src'));
