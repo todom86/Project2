@@ -1,4 +1,4 @@
-var cors = require('cors');
+// var cors = require('cors');
 var express = require('express');
 var app = express();
 var dataRouter = express.Router();
@@ -7,10 +7,10 @@ var MongoClient = require('mongodb').MongoClient;
 
 // console.log(configMongo.url);
 
-var results = null;
+// var results = null;
 
 var getData = function() {
-    dataRouter.all('*', cors());
+    // dataRouter.all('*', cors());
 
     dataRouter.route('/')
         .get((req, res) => {
@@ -33,7 +33,7 @@ var getData = function() {
                             err: err.code
                         });
                     } else {
-                        console.log("Accessed Records")
+                        console.log("Website Accessed")
                         res.send(results);
                     }    
                 });

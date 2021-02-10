@@ -1,9 +1,7 @@
-'use strict';
-
 var express = require('express');
 var app = express();
 
-var dataRouter = require('./src/routes/religionRoutes');
+var dataRouter = require('./src/routes/getStateData');
 
 var port = process.env.PORT || 5000;
 
@@ -17,7 +15,7 @@ app.use('/data', dataRouter.getData());
 
 app.get('/', (req, res) => {
     res.render('index', {
-        title: "Religion Chart"
+        title: "State Analysis"
     });
 });
 

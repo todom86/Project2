@@ -234,7 +234,7 @@ d3.json(url).then((data) => {
     var ideoList = ["Very liberal","Liberal","Moderate","Conservative","Very conservative", "Don't know/Refused"];
 
     // Array to hold category values to display in dropdown menu
-    var categoryArray = ['Ideology', 'Sex', 'Age Group', 'Generation', 'Income', 'Party', 'Religion'];
+    var categoryArray = ['Ideology', 'Age Group', 'Generation', 'Income', 'Party', 'Religion', 'Sex'];
 
     // console.log(stateList);
     // console.log(sexList);
