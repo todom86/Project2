@@ -109,7 +109,7 @@ function renderRect(rectangles, newXScale, newYScale, stateInfo, barGroup) {
       
     rectangles.transition()
         .delay((d,i) => i*50)
-        .duration(1000)
+        .duration(1400)
         .attr("y", height)
         .attr("width", 0)
         .attr("height", 0)
@@ -126,8 +126,8 @@ function renderRect(rectangles, newXScale, newYScale, stateInfo, barGroup) {
           .attr("class", "bars");
     
     rectangles.transition()
-        .delay((d,i) => 1000 + i*50)
-        .duration(1000)
+        .delay((d,i) => 1400 + i*50)
+        .duration(1400)
         .attr("y", d => newYScale(d.percent))
         .attr("width", newXScale.bandwidth())
         .attr("height", d => height - newYScale(d.percent));
@@ -143,7 +143,7 @@ function renderRectText(rectText, newXScale, newYScale, stateInfo, barGroup) {
     
     rectText.transition()
         .delay((d,i) => i*50)
-        .duration(1000)
+        .duration(1400)
         .attr("y", height)
         .attr("height", 0)
         .remove();
@@ -158,8 +158,8 @@ function renderRectText(rectText, newXScale, newYScale, stateInfo, barGroup) {
             .attr("class", "percentText");
     
     rectText.transition()
-        .delay((d,i) => 1000 + i*50)
-        .duration(1000)
+        .delay((d,i) => 1400 + i*50)
+        .duration(1400)
         .attr("y", d => newYScale(d.percent)-5)
         .text(d => format(d.percent) + "%");
 
@@ -306,7 +306,7 @@ d3.json(url).then((data) => {
     
     rectangles.transition()
         .delay((d,i) => i*50)
-        .duration(1000)
+        .duration(1400)
         .attr("y", d => yLinearScale(d.percent))
         .attr("width", xBandScale.bandwidth())
         .attr("height", d => height - yLinearScale(d.percent));
@@ -322,7 +322,7 @@ d3.json(url).then((data) => {
 
     rectText.transition()
         .delay((d,i) => i*50)
-        .duration(1000)
+        .duration(1400)
         .attr("y", d => yLinearScale(d.percent)-5);
 
     // Initial Spider Graph
