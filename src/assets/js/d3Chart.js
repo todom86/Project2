@@ -3,7 +3,7 @@ var svgWidth = 600;
 var svgHeight = 600;
 
 var margin = {
-    top: 110,
+    top: 180,
     right: 10,
     bottom: 180,
     left: 25
@@ -27,12 +27,16 @@ function getStateInfo(data, state, chosenXAxis, chosenCategory) {
     var stateInfo = [];
 
     st = data.filter((d) => {
-        return d.state === state;
+        if (state === 'United States') {
+            return d;
+        } else {
+            return d.state === state;
+        };
     });
     // console.log(st);
 
     var totalWeight = d3.sum(st.map(d => d.weight));
-    // console.log(totalWeight);
+    console.log(totalWeight);
 
     chosenCategory.forEach((item) => {
         var x = 0;
@@ -235,6 +239,7 @@ d3.json(url).then((data) => {
 
     // Array to hold category values to display in dropdown menu
     var categoryArray = ['Ideology', 'Age Group', 'Generation', 'Income', 'Party', 'Religion', 'Sex'];
+    var includeUS =  ['United States'].concat(stateList);
 
     // console.log(stateList);
     // console.log(sexList);
@@ -247,7 +252,7 @@ d3.json(url).then((data) => {
 
     // Initial values
     var chosenXAxis = 'ideo';
-    var chosenState = 'Alabama';
+    var chosenState = 'United States';
     var chosenCategory = ideoList;
 
     // Append data to dropdowns
@@ -261,7 +266,7 @@ d3.json(url).then((data) => {
             .property("value", d);
     })
 
-    stateList.map((d) => {
+    includeUS.map((d) => {
         StateDropdown
             .append("option")
             .text(d)
