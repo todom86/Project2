@@ -1,4 +1,4 @@
-// var cors = require('cors');
+var cors = require('cors');
 var express = require('express');
 // var app = express();
 var dataRouter = express.Router();
@@ -10,7 +10,7 @@ var MongoClient = require('mongodb').MongoClient;
 // var results = null;
 
 var getData = function() {
-    // dataRouter.all('*', cors());
+    dataRouter.all('*', cors());
 
     dataRouter.route('/')
         .get((req, res) => {
