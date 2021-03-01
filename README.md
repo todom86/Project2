@@ -1,5 +1,4 @@
 # State Analysis
-## Project2
 
 ## Objective
 
@@ -102,3 +101,5 @@ The plan for this app is to provide a better user interface, a more in-depth ana
 Data provided by:
 
 	“Pew Research Center 2014 U.S. Religious Landscape Study.” Pew Research Center, Washington, D.C. (05/12/2015) https://www.pewforum.org/dataset/pew-research-center-2014-u-s-religious-landscape-study/.
+
+Note: Full data file was removed from 'src/data' as to not public post the entire dataset provided from Pew Research Center.
