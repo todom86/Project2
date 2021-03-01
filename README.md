@@ -72,17 +72,17 @@ This file is where all the magic happens that runs the charts displayed on the i
 
 getStateInfo(): This function is used to determine what state and category that the user is looking for (provided from dropdown filters).  It then goes through the provided data, searches for each matching state name, calculates the total sum of the survey weights, then goes through all the entries for that provided state, then, for each sub-category in the provided category, sums up the total weights for each sub-category, and finds the percentage of that sub-category based on total weight of the state.  All of these percentages are pushed into an array to show an estimated percentage of people in the state that would have responded as a member of the sub-category. This array is organized in key-value pairs of {sub-category: percentage}
 
-xScale(): Maps the sub-categories of the user chosen category to the x-axis of the D3 chart.
+**xScale():** Maps the sub-categories of the user chosen category to the x-axis of the D3 chart.
 
-yScale(): Maps the percentages of each sub-category to the y-axis of the D3 chart.
+**yScale():** Maps the percentages of each sub-category to the y-axis of the D3 chart.
 
-renderXAxis(): Removes the names of current sub-categories and replaces them with names of new sub-categories when user selects a new category from dropdown.
+**renderXAxis():** Removes the names of current sub-categories and replaces them with names of new sub-categories when user selects a new category from dropdown.
 
-renderRect(): Transitions current bars to the x-axis and removes them, then creates new rectangles based on new information and transistions them to correct heights.
+**renderRect():** Transitions current bars to the x-axis and removes them, then creates new rectangles based on new information and transistions them to correct heights.
 
-renderRectText(): Does the same as renderRect(), but applies to the percentages displayed above each bar.
+**renderRectText():** Does the same as renderRect(), but applies to the percentages displayed above each bar.
 
-updateSpider(): Creates a Plotly pie chart with data provided from getStateInfo(). Note: originally was displayed as a spider graph but then changed to a pie chart, and function name was not updated.
+**updateSpider():** Creates a Plotly pie chart with data provided from getStateInfo(). Note: originally was displayed as a spider graph but then changed to a pie chart, and function name was not updated.
 
 All of these functions work together to display data based on the filters a user selects by using the dropdown menus.
 
