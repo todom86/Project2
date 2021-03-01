@@ -10,6 +10,7 @@ var MongoClient = require('mongodb').MongoClient;
 // var results = null;
 
 var getData = function() {
+
     dataRouter.all('*', cors());
 
     dataRouter.route('/')

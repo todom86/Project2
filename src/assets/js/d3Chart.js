@@ -213,7 +213,7 @@ function updateSpider(stateInfo) {
     Plotly.newPlot("pieChart", info, layout);
 }
     
-var url = 'http://127.0.0.1:8000/data'
+var url = 'http://localhost:8000/data'
 var format = d3.format(".2f");
 
 d3.json(url).then((data) => {
